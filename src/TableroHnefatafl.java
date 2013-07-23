@@ -1,6 +1,7 @@
 
 import java.awt.event.*;
 import java.awt.*;
+import java.util.Iterator;
 
 import javax.swing.*;
 
@@ -70,10 +71,6 @@ public class TableroHnefatafl extends JFrame{
 		manejador.setTablero(11, 11, 5, 5, posBlancasX, posBlancasY, posNegrasX, posNegrasY);
 		agregarFichas(); 
 		listeners();
-
-
-
-
 	} 
 
 	void agregarBtn(){
@@ -118,21 +115,24 @@ public class TableroHnefatafl extends JFrame{
 				esperandoMov = true;
 				x = x_act;
 				y = y_act;
-				System.out.println("Estamos iniciando la validancion1..... esperando");
 			}
 			else if(esperandoMov && !manejador.btnConIcono(tableroBtn[x_act][y_act])){
-				System.out.println("Validando.....");
-
-				if(manejador.comprobarPosicion(x,y,x_act,y_act) && manejador.recorridoLimpio(x,y,x_act,y_act)){
+				if(manejador.recorridoLimpio(x,y,x_act,y_act)){
 					mover(x,y,x_act,y_act);
-					comprobarFichaComida(x_act,y_act,"sueco");
-					comprobarComerRey(x_act,y_act);
+					if(manejador.comerFicha(x_act,y_act,"sueco","moscovita")){
+						comerFichas(manejador.getCoordX(),manejador.getCoordY());
+					}
+					if(manejador.fichaComida(x_act, y_act, "sueco")){
+						comerFicha(x_act, y_act);
+					}
+
+					//comprobarFichaComida(x_act,y_act,"sueco");
+					//comprobarComerRey(x_act,y_act);
 					esperandoMov = false;
 					actual = jugador.JUGADOR2;
 					lblMensajes.setText(getMensaje());
 
-				}
-				else{
+				}else{
 					esperandoMov = true;
 					actual = jugador.JUGADOR1;
 				}
@@ -144,16 +144,19 @@ public class TableroHnefatafl extends JFrame{
 				esperandoMov = true;
 				x = x_act;
 				y = y_act;
-				System.out.println("Estamos iniciando la validancion2..... esperando");
-
 			}
-			else if(esperandoMov&& !manejador.btnConIcono(tableroBtn[x_act][y_act]))
-			{
-				System.out.println("Validando.....");
-				if(manejador.comprobarPosicion(x,y,x_act,y_act) && manejador.recorridoLimpio(x,y,x_act,y_act))
-				{
+			else if(esperandoMov&& !manejador.btnConIcono(tableroBtn[x_act][y_act])){
+				if(manejador.recorridoLimpio(x,y,x_act,y_act)){
 					mover(x,y,x_act,y_act);
-					switch(manejador.getPos(x_act, y_act)){
+					if(manejador.comerFicha(x_act,y_act,"moscovita","sueco")){
+						comerFichas(manejador.getCoordX(),manejador.getCoordY());
+					}
+					if(manejador.fichaComida(x_act, y_act, "moscovita")){
+						comerFicha(x_act, y_act);
+					}
+					
+					
+					/*switch(manejador.getPos(x_act, y_act)){
 					case "rey":
 						comprobarReyComido(x_act,y_act);
 						comprobarReySalio();
@@ -162,36 +165,42 @@ public class TableroHnefatafl extends JFrame{
 						comprobarFichaComida(x_act,y_act,"moscovita");
 						comprobarComerFicha(x_act,y_act,"moscovita");
 						break;
-					}
-					
-				
+					}*/
 
 					esperandoMov = false;
 					actual = jugador.JUGADOR1;
 					lblMensajes.setText(getMensaje());
 
-				}
-				else
-				{
+				}else{
 					esperandoMov = true;
 					actual = jugador.JUGADOR2;
 				}
-				System.out.println("Validado..... jugador2");
-
 			}
-
 			break;
-
 		}
 	}
 
-	public void comprobarFichaComida(int x, int y,String s)
-	{
-		if(manejador.fichaComida(x, y,s)){
+	void comerFichas(Iterator<Integer> coordX, Iterator<Integer> coordY){
+		while(coordX.hasNext()){
+			int x = coordX.next();
+			int y = coordY.next();
 			tableroBtn[x][y].setIcon(null);
 			manejador.setPos(x, y, "");
 		}
 	}
+
+	void comerFicha(int x, int y){
+		tableroBtn[x][y].setIcon(null);
+		manejador.setPos(x, y, "");
+	}
+
+	/*public void comprobarFichaComida(int x, int y,String s)
+	{
+		if(manejador.comerFicha(x, y,s)){
+			tableroBtn[x][y].setIcon(null);
+			manejador.setPos(x, y, "");
+		}
+	}*/
 
 	public void comprobarComerRey(int x, int y){
 		if(manejador.reyComido(x, y)){
@@ -199,7 +208,7 @@ public class TableroHnefatafl extends JFrame{
 			//TO-DO GAMEOVER
 		}
 	}
-	
+
 	public void comprobarComerFicha(int x, int y, String s){
 		//TODO
 	}
@@ -217,7 +226,7 @@ public class TableroHnefatafl extends JFrame{
 			//TO-DO game over
 		}
 	}
-	
+
 	public void comprobarReySalio(){
 		if(manejador.reySalio()){
 			System.out.println("LOL game over, king is out");
@@ -347,7 +356,7 @@ public class TableroHnefatafl extends JFrame{
 
 		}
 	}
-*/
+	 */
 	public void mover(int x, int y, int a, int b)
 	{
 		switch(manejador.getPos(x, y)){
