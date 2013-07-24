@@ -15,19 +15,25 @@ import javax.swing.JPanel;
 public class PanelPrincipal extends JPanel {
 	JButton btnJ1, btnJ2, btnJ3, btnJ4, btnJ5, btnReglas,btnHistoria;
 	JLabel jLabel1, jLabel2, jLabel3;
-	Manejador manejador;
 	VentanaReglas ventanaReglas;
 	VentanaHistoria ventanaHistoria;
 	TableroHnefatafl tableroHnefatafl;
+	ManejadorTablero manejadorTablero;
+	ManejadorRey manejadorRey;
+	ManejadorFichas manejadorFichas;
 	String[] ubicacion = {"/imagenes/fondo.jpg","/imagenes/fondo2.jpg"};
-	int u;
+	int limX,limY,posFondo;
 	
-	public PanelPrincipal(VentanaReglas vR, VentanaHistoria vH, Manejador m) {
-		u = new Random().nextInt(2);
+	public PanelPrincipal(VentanaReglas vR, VentanaHistoria vH,int limX,int limY,ManejadorTablero mT, ManejadorRey mR,ManejadorFichas mF) {
+		posFondo = new Random().nextInt(2);
 		initComponents();
-		this.manejador = m;
+		this.limX = limX;
+		this.limY = limY;
 		this.ventanaReglas = vR;
 		this.ventanaHistoria = vH;
+		this.manejadorTablero = mT;
+		this.manejadorRey = mR;
+		this.manejadorFichas = mF;
 		this.setSize(795,458);
 		setVisible(true);
 	}
@@ -188,7 +194,7 @@ public class PanelPrincipal extends JPanel {
 		
 		switch(x){
 		case 1:
-			tableroHnefatafl = new TableroHnefatafl(manejador);
+			tableroHnefatafl = new TableroHnefatafl(limX,limY,manejadorTablero,manejadorRey,manejadorFichas);
 			break;
 		}
 		
@@ -215,7 +221,7 @@ public class PanelPrincipal extends JPanel {
 	public void paintComponent(Graphics g)
 	{
 		Dimension tamanio = getSize();
-		ImageIcon imagenfondo = new ImageIcon(getClass().getResource(ubicacion[u]));
+		ImageIcon imagenfondo = new ImageIcon(getClass().getResource(ubicacion[posFondo]));
 		g.drawImage(imagenfondo.getImage(), 0, 0, tamanio.width, tamanio.height, null);
 		setOpaque(false);
 		super.paintComponent(g);

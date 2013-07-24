@@ -1,4 +1,3 @@
 Ajedrez Vikingo
-22/7/13
-Incompleto, interfez gráfica y tablero funcionando, lógica del tablero 
-sin terminar.
+Autor: Emmanuel Arias Soto
+Incompleto, interfez gráfica y tablero funcionando, reglas de movimiento, y comer fichas listas pero aún hace falta.
