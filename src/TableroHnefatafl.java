@@ -16,35 +16,36 @@ public class TableroHnefatafl extends JFrame{
 	String men = "";
 	JButton btnNuevoJuego;
 	JButton[][] tableroBtn; 
-	int y, x,limX,limY;
+	final int LIMITE,CENTRO;
+	int y, x;
 	boolean esperandoMov = false;
 	final int[] posBlancasX = {3,4,4,4,5,5,5,5,6,6,6,7}, 
 			posBlancasY = {5,4,5,6,3,4,6,7,4,5,6,5},
-			posNegrasX = {0,0,0,0,0,1,10,10,10,10,10,9,3,4,5,6,7,5},//,3,4,5,6,7,5},
-			posNegrasY = {3,4,5,6,7,5,3,4,5,6,7,5,0,0,0,0,0,1};//,10,10,10,10,10,9};
+			posNegrasX = {0,0,0,0,0,1,10,10,10,10,10,9,3,4,5,6,7,5,3,4,5,6,7,5},
+			posNegrasY = {3,4,5,6,7,5,3,4,5,6,7,5,0,0,0,0,0,1,10,10,10,10,10,9};
 	 
 	enum jugador{JUGADOR1, JUGADOR2};
 	jugador actual;
 
 
-	public TableroHnefatafl(int limX,int limY,ManejadorTablero mT, ManejadorRey mR,ManejadorFichas mF){
+	public TableroHnefatafl(int LIMITE,ManejadorTablero mT, ManejadorRey mR,ManejadorFichas mF){
 		super("Hnefatafl");
 		setLayout(null);
 		setSize(800,560);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setVisible(true);
-		this.limX = limX;
-		this.limY = limY;
+		this.LIMITE = LIMITE;
+		this.CENTRO = (LIMITE-1)/2;
 		this.manejadorTablero = mT;
 		this.manejadorRey = mR;
 		this.manejadorFichas = mF;
-		tableroBtn = new JButton[limX][limY];
+		tableroBtn = new JButton[LIMITE][LIMITE];
 
 		actual = jugador.JUGADOR1;
 
 		panelTablero = new JPanel();
-		panelTablero.setLayout(new GridLayout(limX, limY, 3, 3));
+		panelTablero.setLayout(new GridLayout(LIMITE, LIMITE, 3, 3));
 		panelTablero.setBounds(1, 1, 625, 500);
 		panelTablero.setVisible(true);
 
@@ -79,8 +80,8 @@ public class TableroHnefatafl extends JFrame{
 	} 
 
 	void agregarBtn(){
-		for(int i =0; i<limX; i++){
-			for(int j =0; j<limY; j++) {
+		for(int i =0; i<LIMITE; i++){
+			for(int j =0; j<LIMITE; j++) {
 				tableroBtn[i][j] = new JButton( "" );
 				panelTablero.add(tableroBtn[i][j]);
 			}
@@ -95,8 +96,8 @@ public class TableroHnefatafl extends JFrame{
 			}});
 
 		ButtonHandler handler = new ButtonHandler();
-		for(int i=0;i<limX;i++){
-			for(int j=0;j<limY;j++) {
+		for(int i=0;i<LIMITE;i++){
+			for(int j=0;j<LIMITE;j++) {
 				tableroBtn[i][j].addActionListener(handler);  
 			}
 		}
@@ -104,8 +105,8 @@ public class TableroHnefatafl extends JFrame{
 
 	class ButtonHandler implements ActionListener{
 		public void actionPerformed(ActionEvent evento){
-			for(int i=0;i<limX;i++){
-				for(int j=0;j<limY;j++){
+			for(int i=0;i<LIMITE;i++){
+				for(int j=0;j<LIMITE;j++){
 					if(evento.getSource() == tableroBtn[i][j]) {
 						principal(i,j);
 					}
@@ -122,6 +123,7 @@ public class TableroHnefatafl extends JFrame{
 				y = y_act;
 			}
 			else if(esperandoMov && !manejadorFichas.btnConIcono(tableroBtn[x_act][y_act])){
+				//esto en otro metodo
 				if(manejadorFichas.recorridoLimpio(x,y,x_act,y_act)){
 					mover(x,y,x_act,y_act);
 					if(manejadorFichas.comerFicha(x_act,y_act,"sueco","moscovita")){
@@ -129,9 +131,29 @@ public class TableroHnefatafl extends JFrame{
 					}if(manejadorFichas.fichaComida(x_act, y_act, "sueco")){
 						comerFicha(x_act, y_act);
 					}
-					if(manejadorRey.verificarRey()){
-						terminarJuego("Suecos");
+					//meter el switch en otro metodo
+					switch(manejadorRey.verificarEstado()){
+					case 1:
+						System.out.println("gano");
+						break;
+					case 2:
+						System.out.println("perdio");
+						break;
+					case 3:
+						System.out.println("jaque y cuidado");
+						break;
+					case 4:
+						System.out.println("cuidado");
+						break;
+					case 5:
+						System.out.println("jaque");
+						break;
+					case 6:
+						System.out.println("mate");
+						break;
 					}
+					//esto igual en otro
+					manejadorRey.verificarEstado();
 					esperandoMov = false;
 					actual = jugador.JUGADOR2;
 					lblMensajes.setText(getMensaje());
@@ -156,21 +178,16 @@ public class TableroHnefatafl extends JFrame{
 					case "sueco":
 						if(manejadorFichas.comerFicha(x_act,y_act,"moscovita","sueco")){
 							comerFichas(manejadorFichas.getCoordX(),manejadorFichas.getCoordY());
-						} 
-						if(manejadorFichas.fichaComida(x_act, y_act, "moscovita")){
+						} if(manejadorFichas.fichaComida(x_act, y_act, "moscovita")){
 							comerFicha(x_act, y_act);
-						}
-						if(manejadorRey.verificarRey()){
-							terminarJuego("Suecos");
-						}
+						} 
+						manejadorRey.verificarEstado();
 						break;
 					case "rey":
 						if(manejadorFichas.comerFicha(x_act,y_act,"moscovita","sueco")){
 							comerFichas(manejadorFichas.getCoordX(),manejadorFichas.getCoordY());
-						}
-						if(manejadorRey.verificarRey()){
-							terminarJuego("Suecos");
-						}
+						} 
+						manejadorRey.verificarEstado();
 						break;
 					}
 					esperandoMov = false;
@@ -200,8 +217,8 @@ public class TableroHnefatafl extends JFrame{
 	}
 	
 	void terminarJuego(String ganador ){
-		for(int i =0; i<limX; i++){
-			for(int j =0; j<limY; j++){
+		for(int i =0; i<LIMITE; i++){
+			for(int j =0; j<LIMITE; j++){
 				tableroBtn[i][j].setEnabled(false); 
 			}
 		}
@@ -243,7 +260,12 @@ public class TableroHnefatafl extends JFrame{
 	}
 
 	void agregarFichas(){
-		tableroBtn[5][5].setIcon(new ImageIcon(getClass().getResource("/imagenes/rey_peq.png")));
+		tableroBtn[CENTRO][CENTRO].setIcon(new ImageIcon(getClass().getResource("/imagenes/rey_peq.png")));
+		tableroBtn[CENTRO][CENTRO].setBackground(Color.GREEN);
+		tableroBtn[0][0].setBackground(Color.RED);
+		tableroBtn[0][LIMITE-1].setBackground(Color.RED);
+		tableroBtn[LIMITE-1][0].setBackground(Color.RED);
+		tableroBtn[LIMITE-1][LIMITE-1].setBackground(Color.RED);
 		for(int i=0;i<posBlancasX.length;i++){
 			tableroBtn[posBlancasX[i]][posBlancasY[i]].setIcon(new ImageIcon(getClass().getResource("/imagenes/sueco_peq.png")));
 		}
