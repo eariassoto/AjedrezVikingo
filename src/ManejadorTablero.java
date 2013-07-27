@@ -9,18 +9,16 @@ import javax.swing.JButton;
 public class ManejadorTablero {
 
 	String[][] tablero; 
-	int limX, limY, centro;
+	final int LIMITE, CENTRO;
 	
-	public ManejadorTablero(int limX,int limY){
-		this.limX = limX;
-		this.limY = limY;
+	public ManejadorTablero(int LIMITE){
+		this.LIMITE = LIMITE;
+		this.CENTRO = (LIMITE-1)/2;
 	}
 
 	public void setTablero(int[] posBX, int[] posBY, int[] posNX, int[] posNY){
-		
-		this.centro = (limX-1)/2;
-		tablero = new String[limX][limY];
-		tablero[centro][centro] = "rey";
+		tablero = new String[LIMITE][LIMITE];
+		tablero[CENTRO][CENTRO] = "rey";
 		for(int i=0;i<posBX.length;i++){
 			tablero[posBX[i]][posBY[i]] = "sueco";
 		}

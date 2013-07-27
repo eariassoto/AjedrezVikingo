@@ -1,3 +1,4 @@
 Ajedrez Vikingo
 Autor: Emmanuel Arias Soto
-Incompleto, interfez gráfica y tablero funcionando, reglas de movimiento, comer fichas y verificar estado del juego.
+Ventana principal y tablero modo "Hnefatafl" funcionando, 
+faltan adaptar los otros modos de juego además de modificar los paneles de las reglas y la historia del juego.

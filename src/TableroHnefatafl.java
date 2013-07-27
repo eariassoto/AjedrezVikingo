@@ -11,19 +11,19 @@ public class TableroHnefatafl extends JFrame{
 	ManejadorTablero manejadorTablero;
 	ManejadorRey manejadorRey;
 	ManejadorFichas manejadorFichas;
-	JPanel panelTablero, panelBtn, panelConsola;
-	JLabel lblMensajes;
+	JPanel panelTablero, panelLateral, panelConsola;
+	JLabel lblMensajes, lblAdvertenciaJU, lblAdvertenciaJD;
 	String men = "";
-	JButton btnNuevoJuego;
+	JButton btnNuevoJuego,btnCambiarFicha;
 	JButton[][] tableroBtn; 
-	final int LIMITE,CENTRO;
 	int y, x;
-	boolean esperandoMov = false;
+	boolean esperandoMov = false, fin = false;
+	final int LIMITE,CENTRO;
 	final int[] posBlancasX = {3,4,4,4,5,5,5,5,6,6,6,7}, 
 			posBlancasY = {5,4,5,6,3,4,6,7,4,5,6,5},
 			posNegrasX = {0,0,0,0,0,1,10,10,10,10,10,9,3,4,5,6,7,5,3,4,5,6,7,5},
 			posNegrasY = {3,4,5,6,7,5,3,4,5,6,7,5,0,0,0,0,0,1,10,10,10,10,10,9};
-	 
+	final String SUECO = "sueco", MOSCOVITA = "moscovita", REY = "rey", ADJ = "Jugador 1: Jaque", ADJM = "Jugador 1: Jaque Mate",ADCR = "Jugador 2: cuida tu Rey";
 	enum jugador{JUGADOR1, JUGADOR2};
 	jugador actual;
 
@@ -49,35 +49,62 @@ public class TableroHnefatafl extends JFrame{
 		panelTablero.setBounds(1, 1, 625, 500);
 		panelTablero.setVisible(true);
 
-		panelBtn = new JPanel();
-		panelBtn.setLayout(new GridLayout(15,1,3,3));
-		panelBtn.setBounds(660, 0, 130, 500);
-		panelBtn.setVisible(true);
+		panelLateral = new JPanel();
+		panelLateral.setLayout(new GridLayout(15,1,3,3));
+		panelLateral.setBounds(630, 0, 160, 500);
+		panelLateral.setVisible(true);
 
 		panelConsola = new JPanel();
-		panelConsola.setLayout(new FlowLayout());
 		panelConsola.setBounds(0, 500, 200, 300);
 		panelConsola.setVisible(true);
 
 		btnNuevoJuego = new JButton("Nuevo Juego");
 		btnNuevoJuego.setVisible(true);
+		
+		btnCambiarFicha = new JButton("Cambiar de ficha");
+		btnCambiarFicha.setVisible(false);
 
-		lblMensajes = new JLabel(men);
+		lblMensajes = new JLabel();
 		lblMensajes.setFont(new java.awt.Font("Tahoma", 0, 14));
 		lblMensajes.setText(getMensaje());
 		lblMensajes.setVisible(true);
 
+		lblAdvertenciaJU = new JLabel();
+		lblAdvertenciaJU.setForeground(Color.RED);
+		lblAdvertenciaJU.setFont(new java.awt.Font("Tahoma", 0, 14));
+		lblAdvertenciaJU.setVisible(false);
+		
+		lblAdvertenciaJD = new JLabel();
+		lblAdvertenciaJD.setForeground(Color.RED);
+		lblAdvertenciaJD.setFont(new java.awt.Font("Tahoma", 0, 14));
+		lblAdvertenciaJD.setVisible(false);
+		
+		panelLateral.add(btnNuevoJuego);
+		panelLateral.add(btnCambiarFicha);
+		panelLateral.add(lblAdvertenciaJU);
+		panelLateral.add(lblAdvertenciaJD);
+		panelConsola.add(lblMensajes);
+		
+
+		
 		add(panelTablero);
-		add(panelBtn);
+		add(panelLateral);
 		add(panelConsola);
 
-		panelBtn.add(btnNuevoJuego);
-		panelConsola.add(lblMensajes);
+		
 		agregarBtn();
-		mT.setTablero(posBlancasX, posBlancasY, posNegrasX, posNegrasY);
-		agregarFichas(); 
+		iniciar();
 		listeners();
 	} 
+	
+	void iniciar(){
+		fin = false;
+		manejadorTablero.setTablero(posBlancasX, posBlancasY, posNegrasX, posNegrasY);
+		limpiarFichas();
+		agregarFichas();
+		actual = actual.JUGADOR1;
+		lblMensajes.setText(getMensaje());
+	}
 
 	void agregarBtn(){
 		for(int i =0; i<LIMITE; i++){
@@ -91,8 +118,15 @@ public class TableroHnefatafl extends JFrame{
 	void listeners(){
 		btnNuevoJuego.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				manejadorTablero.setTablero(posBlancasX, posBlancasY, posNegrasX, posNegrasY);
-				agregarFichas();
+				if(JOptionPane.showConfirmDialog(null,"¿Deseas iniciar un nuevo juego?, la partida actual se perderá.", "Nuevo Juego", JOptionPane.YES_NO_OPTION) == 0){
+					iniciar();
+				}
+				
+			}});
+		
+		btnCambiarFicha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				esperandoMov = false;
 			}});
 
 		ButtonHandler handler = new ButtonHandler();
@@ -117,88 +151,141 @@ public class TableroHnefatafl extends JFrame{
 	void principal(int x_act, int y_act) {
 		switch (actual){
 		case JUGADOR1:
-			if(!esperandoMov && manejadorFichas.btnEsNegro(x_act, y_act) && manejadorFichas.btnConIcono(tableroBtn[x_act][y_act])){
-				esperandoMov = true;
-				x = x_act;
-				y = y_act;
+			if(puedeSeleccionar(x_act,y_act)){
+				seleccionarFicha(x_act, y_act);
 			}
-			else if(esperandoMov && !manejadorFichas.btnConIcono(tableroBtn[x_act][y_act])){
-				//esto en otro metodo
-				if(manejadorFichas.recorridoLimpio(x,y,x_act,y_act)){
+			else if(podriaMover(x_act,y_act)){
+				if(puedeMover(x,y,x_act,y_act)){
 					mover(x,y,x_act,y_act);
-					if(manejadorFichas.comerFicha(x_act,y_act,"sueco","moscovita")){
+					if(comerFicha(x_act,y_act,SUECO,MOSCOVITA)){
 						comerFichas(manejadorFichas.getCoordX(),manejadorFichas.getCoordY());
-					}if(manejadorFichas.fichaComida(x_act, y_act, "sueco")){
+					}if(fichaComida(x_act, y_act, SUECO)){
 						comerFicha(x_act, y_act);
 					}
-					//meter el switch en otro metodo
-					switch(manejadorRey.verificarEstado()){
-					case 1:
-						System.out.println("gano");
-						break;
-					case 2:
-						System.out.println("perdio");
-						break;
-					case 3:
-						System.out.println("jaque y cuidado");
-						break;
-					case 4:
-						System.out.println("cuidado");
-						break;
-					case 5:
-						System.out.println("jaque");
-						break;
-					case 6:
-						System.out.println("mate");
-						break;
-					}
-					//esto igual en otro
-					manejadorRey.verificarEstado();
-					esperandoMov = false;
-					actual = jugador.JUGADOR2;
-					lblMensajes.setText(getMensaje());
+					verificarEstado();
+					liberarFicha();
 
 				}else{
-					esperandoMov = true;
-					actual = jugador.JUGADOR1;
+					liberarFicha(true);
 				}
 			}
 			break;
 
 		case JUGADOR2:
-			if(!esperandoMov && manejadorFichas.btnEsBlanco(x_act, y_act) && manejadorFichas.btnConIcono(tableroBtn[x_act][y_act])){
-				esperandoMov = true;
-				x = x_act;
-				y = y_act;
+			if(puedeSeleccionar(x_act,y_act)){
+				seleccionarFicha(x_act, y_act);
 			}
-			else if(esperandoMov&& !manejadorFichas.btnConIcono(tableroBtn[x_act][y_act])){
-				if(manejadorFichas.recorridoLimpio(x,y,x_act,y_act)){
+			else if(podriaMover(x_act,y_act)){
+				if(puedeMover(x,y,x_act,y_act)){
 					mover(x,y,x_act,y_act);
 					switch(manejadorTablero.getPos(x_act, y_act)){
-					case "sueco":
-						if(manejadorFichas.comerFicha(x_act,y_act,"moscovita","sueco")){
+					case SUECO:
+						if(comerFicha(x_act,y_act,MOSCOVITA,SUECO)){
 							comerFichas(manejadorFichas.getCoordX(),manejadorFichas.getCoordY());
-						} if(manejadorFichas.fichaComida(x_act, y_act, "moscovita")){
+						} if(fichaComida(x_act, y_act, MOSCOVITA)){
 							comerFicha(x_act, y_act);
 						} 
-						manejadorRey.verificarEstado();
+						verificarEstado();
 						break;
-					case "rey":
-						if(manejadorFichas.comerFicha(x_act,y_act,"moscovita","sueco")){
+					case REY:
+						if(comerFicha(x_act,y_act,MOSCOVITA,SUECO)){
 							comerFichas(manejadorFichas.getCoordX(),manejadorFichas.getCoordY());
 						} 
-						manejadorRey.verificarEstado();
+						verificarEstado();
 						break;
 					}
-					esperandoMov = false;
-					actual = jugador.JUGADOR1;
-					lblMensajes.setText(getMensaje());
+					liberarFicha();
 				}else{
-					esperandoMov = true;
-					actual = jugador.JUGADOR2;
+					liberarFicha(true);
 				}
 			}
 			break;
+		}
+	}
+
+	boolean puedeSeleccionar(int x_act, int y_act){
+		if(actual == jugador.JUGADOR1){
+			return !esperandoMov && manejadorFichas.btnEsNegro(x_act, y_act) && manejadorFichas.btnConIcono(tableroBtn[x_act][y_act]);
+		}else{
+			return !esperandoMov && manejadorFichas.btnEsBlanco(x_act, y_act) && manejadorFichas.btnConIcono(tableroBtn[x_act][y_act]);
+		}
+	}
+	
+	void seleccionarFicha(int x_act, int y_act){
+		esperandoMov = true;
+		x = x_act;
+		y = y_act;
+		btnCambiarFicha.setVisible(true);
+	}
+	
+	boolean podriaMover(int x_act, int y_act){
+		return esperandoMov && !manejadorFichas.btnConIcono(tableroBtn[x_act][y_act]);
+	}
+	boolean puedeMover(int x, int y, int x_act, int y_act){
+		return manejadorFichas.recorridoLimpio(x,y,x_act,y_act);
+	}
+	boolean comerFicha(int x_act, int y_act, String s, String p){
+		return manejadorFichas.comerFicha(x_act,y_act,s,p);
+	}
+	boolean fichaComida(int x_act, int y_act, String s) {
+		return manejadorFichas.fichaComida(x_act, y_act, s);
+	}
+	
+	void verificarEstado(){
+		switch(manejadorRey.verificarEstado()){
+		case 0:
+			lblAdvertenciaJU.setVisible(false);
+			lblAdvertenciaJD.setVisible(false);
+			break;
+		case 1:
+			lblAdvertenciaJU.setVisible(false);
+			lblAdvertenciaJD.setVisible(false);
+			terminarJuego(SUECO);
+			break;
+		case 2:
+			lblAdvertenciaJU.setVisible(false);
+			lblAdvertenciaJD.setVisible(false);
+			terminarJuego(MOSCOVITA);
+			break;
+		case 3:
+			lblAdvertenciaJU.setText(ADJ);
+			lblAdvertenciaJU.setVisible(true);
+			lblAdvertenciaJD.setText(ADCR);
+			lblAdvertenciaJD.setVisible(true);
+			break;
+		case 4:
+			lblAdvertenciaJD.setText(ADCR);
+			lblAdvertenciaJD.setVisible(true);
+			break;
+		case 5:
+			lblAdvertenciaJU.setText(ADJ);
+			lblAdvertenciaJU.setVisible(true);
+			break;
+		case 6:
+			lblAdvertenciaJU.setText(ADJM);
+			lblAdvertenciaJU.setVisible(true);
+			break;
+		}
+	}
+	
+	void liberarFicha(){
+		esperandoMov = false;
+		btnCambiarFicha.setVisible(false);
+		if(actual == jugador.JUGADOR1){
+			actual = jugador.JUGADOR2;
+		}else{
+			actual = jugador.JUGADOR1;
+		}
+		if(!fin){
+			lblMensajes.setText(getMensaje());
+		}
+	}
+	void liberarFicha(boolean b){
+		esperandoMov = b;
+		if(actual == jugador.JUGADOR1){
+			actual = jugador.JUGADOR2;
+		}else{
+			actual = jugador.JUGADOR1;
 		}
 	}
 
@@ -216,16 +303,15 @@ public class TableroHnefatafl extends JFrame{
 		manejadorTablero.setPos(x, y, "");
 	}
 	
-	void terminarJuego(String ganador ){
+	void terminarJuego(String ganador){
 		for(int i =0; i<LIMITE; i++){
 			for(int j =0; j<LIMITE; j++){
 				tableroBtn[i][j].setEnabled(false); 
 			}
 		}
-		lblMensajes.setText("Han ganado los "+(ganador));
+		lblMensajes.setText("Han ganado los "+(ganador)+"s.");
+		fin = true;
 	}
-
-
 
 	String getMensaje(){
 		switch(actual){
@@ -238,20 +324,21 @@ public class TableroHnefatafl extends JFrame{
 		}
 		return men;
 	}
+	
 	void mover(int x, int y, int a, int b)
 	{
 		switch(manejadorTablero.getPos(x, y)){
-		case "rey":
+		case REY:
 			tableroBtn[a][b].setIcon(new ImageIcon(getClass().getResource("/imagenes/rey_peq.png")));
-			manejadorTablero.setPos(a, b, "rey");
+			manejadorTablero.setPos(a, b, REY);
 			break;
-		case "sueco":
+		case SUECO:
 			tableroBtn[a][b].setIcon(new ImageIcon(getClass().getResource("/imagenes/sueco_peq.png")));
-			manejadorTablero.setPos(a, b, "sueco");
+			manejadorTablero.setPos(a, b, SUECO);
 			break;
-		case "moscovita":
+		case MOSCOVITA:
 			tableroBtn[a][b].setIcon(new ImageIcon(getClass().getResource("/imagenes/moscovita_peq.png")));
-			manejadorTablero.setPos(a, b, "moscovita");
+			manejadorTablero.setPos(a, b, MOSCOVITA);
 			break;
 		}
 		tableroBtn[x][y].setIcon(null);
@@ -272,5 +359,14 @@ public class TableroHnefatafl extends JFrame{
 		for(int i=0;i<posNegrasX.length;i++){
 			tableroBtn[posNegrasX[i]][posNegrasY[i]].setIcon(new ImageIcon(getClass().getResource("/imagenes/moscovita_peq.png")));
 		}
+	}
+	void limpiarFichas(){
+		for(int i=0;i<LIMITE;i++){
+			for(int j=0; j<LIMITE; j++){
+				tableroBtn[i][j].setEnabled(true); 
+				tableroBtn[i][j].setIcon(null);
+			}
+		}
+
 	}
 }

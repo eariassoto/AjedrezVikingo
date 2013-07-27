@@ -120,7 +120,7 @@ public class ManejadorRey {
 			x = posRey[0];
 			y = posRey[1]+1;
 			
-			w=x-1;
+			w=x;
 			while(w>=0 && manejadorTablero.getPos(w, y)!="sueco"){
 				String s = manejadorTablero.getPos(w, y);
 				if(s=="moscovita"){
@@ -128,7 +128,7 @@ public class ManejadorRey {
 				}
 				w--;
 			}
-			w=x+1;
+			w=x;
 			while(w<=LIMITE-1 && manejadorTablero.getPos(w, y)!="sueco"){
 				String s = manejadorTablero.getPos(w, y);
 				if(s=="moscovita"){
@@ -136,7 +136,7 @@ public class ManejadorRey {
 				}
 				w++;
 			}
-			w = y+1; 
+			w = y; 
 			while(w<=LIMITE-1 && manejadorTablero.getPos(x, w)!="sueco"){
 				String s = manejadorTablero.getPos(x, w);
 				if(s=="moscovita"){
@@ -150,7 +150,7 @@ public class ManejadorRey {
 			x = posRey[0];
 			y = posRey[1]-1;
 			
-			w = y-1; 
+			w = y; 
 			while(w>=0 && manejadorTablero.getPos(x, w)!="sueco"){
 				String s = manejadorTablero.getPos(x, w);
 				if(s=="moscovita"){
@@ -158,7 +158,7 @@ public class ManejadorRey {
 				}
 				w--;
 			}
-			w=x-1;
+			w=x;
 			while(w>=0 && manejadorTablero.getPos(w, y)!="sueco"){
 				String s = manejadorTablero.getPos(w, y);
 				if(s=="moscovita"){
@@ -166,7 +166,7 @@ public class ManejadorRey {
 				}
 				w--;
 			}
-			w=x+1;
+			w=x;
 			while(w<=LIMITE-1 && manejadorTablero.getPos(w, y)!="sueco"){
 				String s = manejadorTablero.getPos(w, y);
 				if(s=="moscovita"){
@@ -180,7 +180,7 @@ public class ManejadorRey {
 			x = posRey[0]-1;
 			y = posRey[1];
 			
-			w = y-1; 
+			w = y; 
 			while(w>=0 && manejadorTablero.getPos(x, w)!="sueco"){
 				String s = manejadorTablero.getPos(x, w);
 				if(s=="moscovita"){
@@ -188,7 +188,7 @@ public class ManejadorRey {
 				}
 				w--;
 			}
-			w=x-1;
+			w=x;
 			while(w>=0 && manejadorTablero.getPos(w, y)!="sueco"){
 				String s = manejadorTablero.getPos(w, y);
 				if(s=="moscovita"){
@@ -196,7 +196,7 @@ public class ManejadorRey {
 				}
 				w--;
 			}
-			w = y+1; 
+			w = y; 
 			while(w<=LIMITE-1 && manejadorTablero.getPos(x, w)!="sueco"){
 				String s = manejadorTablero.getPos(x, w);
 				if(s=="moscovita"){
@@ -210,26 +210,29 @@ public class ManejadorRey {
 			x = posRey[0]+1;
 			y = posRey[1];
 			
-			w = y-1; 
+			w = y; 
 			while(w>=0 && manejadorTablero.getPos(x, w)!="sueco"){
 				String s = manejadorTablero.getPos(x, w);
 				if(s=="moscovita"){
+					System.out.println(x+" "+w);
 					return true;
 				}
 				w--;
 			}
-			w=x+1;
+			w=x;
 			while(w<=LIMITE-1 && manejadorTablero.getPos(w, y)!="sueco"){
 				String s = manejadorTablero.getPos(w, y);
 				if(s=="moscovita"){
+					System.out.println(x+" "+w);
 					return true;
 				}
 				w++;
 			}
-			w = y+1; 
+			w = y; 
 			while(w<=LIMITE-1 && manejadorTablero.getPos(x, w)!="sueco"){
 				String s = manejadorTablero.getPos(x, w);
 				if(s=="moscovita"){
+					System.out.println(x+" "+w);
 					return true;
 				}
 				w++;
