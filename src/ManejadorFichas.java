@@ -9,12 +9,11 @@ public class ManejadorFichas {
 	
 	Fichas fichas;
 	ManejadorTablero manejadorTablero;
-	int limX, limY, centro;
+	final int LIMITE, CENTRO;
 	
-	public ManejadorFichas(int limX, int limY, ManejadorTablero manejadorTablero){
-		this.limX = limX;
-		this.limY = limY;
-		this.centro = (limX-1)/2;
+	public ManejadorFichas(int LIMITE, ManejadorTablero manejadorTablero){
+		this.LIMITE = LIMITE;
+		this.CENTRO = (LIMITE-1)/2;
 		fichas = new Fichas();
 		this.manejadorTablero = manejadorTablero;
 	}
@@ -53,13 +52,13 @@ public class ManejadorFichas {
 		}
 		if(manejadorTablero.getPos(x,y)!="rey" && a==0 && b == 0){
 			return false;
-		}else if(manejadorTablero.getPos(x,y)!="rey" && a==0 && b == limY-1){
+		}else if(manejadorTablero.getPos(x,y)!="rey" && a==0 && b == LIMITE-1){
 			return false;
-		} else if(manejadorTablero.getPos(x,y)!="rey" && a==limX-1 && b == 0){
+		} else if(manejadorTablero.getPos(x,y)!="rey" && a==LIMITE-1 && b == 0){
 			return false;
-		} else if(manejadorTablero.getPos(x,y)!="rey" && a==limX-1 && b == limY-1){
+		} else if(manejadorTablero.getPos(x,y)!="rey" && a==LIMITE-1 && b == LIMITE-1){
 			return false;
-		} else if(manejadorTablero.getPos(x,y)!="rey" && a==centro && b == centro){
+		} else if(manejadorTablero.getPos(x,y)!="rey" && a==CENTRO && b == CENTRO){
 			return false;
 		}else{
 			try{
@@ -104,26 +103,26 @@ public class ManejadorFichas {
 		if(x==0 && y==2 && manejadorTablero.getPos(0,1)==s){
 			fichas.agregar(0, 1);
 			b=true;
-		} else if(x==0 && y==limY-3 && manejadorTablero.getPos(0,limY-2)==s){
-			fichas.agregar(0, limY-2);
+		} else if(x==0 && y==LIMITE-3 && manejadorTablero.getPos(0,LIMITE-2)==s){
+			fichas.agregar(0, LIMITE-2);
 			b=true;
-		} else if(x==limX-1 && y==2 && manejadorTablero.getPos(limX-1,1)==s){
-			fichas.agregar(limX-1, 1);
+		} else if(x==LIMITE-1 && y==2 && manejadorTablero.getPos(LIMITE-1,1)==s){
+			fichas.agregar(LIMITE-1, 1);
 			b=true;
-		} else if(x==limX-1 && y==limY-3 && manejadorTablero.getPos(limX-1,limY-2)==s){
-			fichas.agregar(limX-1, limY-2);
+		} else if(x==LIMITE-1 && y==LIMITE-3 && manejadorTablero.getPos(LIMITE-1,LIMITE-2)==s){
+			fichas.agregar(LIMITE-1, LIMITE-2);
 			b=true;
 		} else if(x==2 && y==0 && manejadorTablero.getPos(1,0)==s){
 			fichas.agregar(1, 0);
 			b=true;
-		} else if(x==limX-3 && y==0 && manejadorTablero.getPos(limX-2,0)==s){
-			fichas.agregar(limX-2, 0);
+		} else if(x==LIMITE-3 && y==0 && manejadorTablero.getPos(LIMITE-2,0)==s){
+			fichas.agregar(LIMITE-2, 0);
 			b=true;
-		} else if(x==2 && y==limY-1 && manejadorTablero.getPos(1,limY-1)==s){
-			fichas.agregar(1, limY-1);
+		} else if(x==2 && y==LIMITE-1 && manejadorTablero.getPos(1,LIMITE-1)==s){
+			fichas.agregar(1, LIMITE-1);
 			b=true;
-		} else if(x==limX-3 && y==limY-1 && manejadorTablero.getPos(limX-2,limY-1)==s){
-			fichas.agregar(limX-2, limY-1);
+		} else if(x==LIMITE-3 && y==LIMITE-1 && manejadorTablero.getPos(LIMITE-2,LIMITE-1)==s){
+			fichas.agregar(LIMITE-2, LIMITE-1);
 			b=true;
 		}
 		//limites
@@ -132,7 +131,7 @@ public class ManejadorFichas {
 				fichas.agregar(x-1, y);
 				b=true;
 			}
-		} if(x<=limX-3){
+		} if(x<=LIMITE-3){
 			if(manejadorTablero.getPos(x+2,y)==p && manejadorTablero.getPos(x+1,y)==s){
 				fichas.agregar(x+1, y);
 				b=true;
@@ -142,45 +141,13 @@ public class ManejadorFichas {
 				fichas.agregar(x, y-1);
 				b=true;
 			}
-		} if(y<=limY-3){
+		} if(y<=LIMITE-3){
 			if(manejadorTablero.getPos(x,y+2)==p && manejadorTablero.getPos(x,y+1)==s){
 				fichas.agregar(x, y+1);
 				b=true;
 			}
 		}
 		return b;
-	}
-	
-	public boolean fichaComida(int x, int y,String s){
-		//esquinas
-		if(x==0 && y==1 && manejadorTablero.getPos(0,2)==s){
-			return true;
-		} else if(x==0 && y==limY-2 && manejadorTablero.getPos(0,limY-3)==s){
-			return true;
-		} else if(x==limX-1 && y==1 && manejadorTablero.getPos(limX-1,2)==s){
-			return true;
-		} else if(x==limX-1 && y==limY-2 && manejadorTablero.getPos(limX-1,limY-3)==s){
-			return true;
-		} else if(x==1 && y==0 && manejadorTablero.getPos(2,0)==s){
-			return true;
-		} else if(x==limX-2 && y==0 && manejadorTablero.getPos(limX-3,0)==s){
-			return true;
-		} else if(x==1 && y==limY-1 && manejadorTablero.getPos(2,limY-1)==s){
-			return true;
-		} else if(x==limX-2 && y==limY-1 && manejadorTablero.getPos(limX-3,limY-1)==s){
-			return true;
-		} //fin de las esquinas
-		//limites
-		if(x>=1 && x<=limX-2){ 
-			if(manejadorTablero.getPos(x-1,y)==s && manejadorTablero.getPos(x+1,y)==s){
-				return true;
-			}
-		} if(y>=2 && y<=limY-2){
-			if(manejadorTablero.getPos(x,y-1)==s && manejadorTablero.getPos(x,y+1)==s){
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	public Iterator<Integer> getCoordX(){
