@@ -7,7 +7,7 @@ import javax.swing.*;
 
 
 @SuppressWarnings("serial")
-public class TableroHnefatafl extends JFrame{
+public class TableroArdRi extends JFrame{
 	ManejadorTablero manejadorTablero;
 	ManejadorRey manejadorRey;
 	ManejadorFichas manejadorFichas;
@@ -18,18 +18,18 @@ public class TableroHnefatafl extends JFrame{
 	JButton[][] tableroBtn; 
 	int y, x;
 	boolean esperandoMov = false, fin = false;
-	final int[] posBlancasX = {3,4,4,4,5,5,5,5,6,6,6,7}, 
-			posBlancasY = {5,4,5,6,3,4,6,7,4,5,6,5},
-			posNegrasX = {0,0,0,0,0,1,10,10,10,10,10,9,3,4,5,6,7,5,3,4,5,6,7,5},
-			posNegrasY = {3,4,5,6,7,5,3,4,5,6,7,5,0,0,0,0,0,1,10,10,10,10,10,9};
-	final int LIMITE = 11,CENTRO;
+	final int[] posBlancasX = {2,2,2,3,3,4,4,4}, 
+			posBlancasY = {2,3,4,2,4,2,3,4},
+			posNegrasX = {0,0,0,1,2,2,3,3,3,3,4,4,5,6,6,6},
+			posNegrasY = {2,3,4,3,0,6,0,1,5,6,0,6,3,2,3,4};
+	final int LIMITE = 7,CENTRO;
 	final int NADA = 0, GANOREY = 1, PERDIOREY = 2, JAQUEYADV = 3, ADV = 4, JAQUE = 5, JAQUEMATE = 6;
 	final String SUECO = "sueco", MOSCOVITA = "moscovita", REY = "rey", ADJ = "Jugador 1: Jaque", ADJM = "Jugador 1: Jaque Mate",ADCR = "Jugador 2: Mira tu Rey";
 	enum jugador{JUGADOR1, JUGADOR2};
 	jugador actual;
 
 
-	public TableroHnefatafl(ManejadorTablero mT, ManejadorRey mR,ManejadorFichas mF){
+	public TableroArdRi(ManejadorTablero mT, ManejadorRey mR,ManejadorFichas mF){
 		super("Hnefatafl");
 		setLayout(null);
 		setSize(800,560);
@@ -207,7 +207,7 @@ public class TableroHnefatafl extends JFrame{
 		return esperandoMov && !manejadorFichas.btnConIcono(tableroBtn[x_act][y_act]);
 	}
 	boolean puedeMover(int x, int y, int x_act, int y_act){
-		return manejadorFichas.recorridoLimpio(x,y,x_act,y_act,true);
+		return manejadorFichas.recorridoLimpio(x,y,x_act,y_act,false);
 	}
 	boolean comerFicha(int x_act, int y_act, String s, String p){
 		return manejadorFichas.comerFicha(x_act,y_act,s,p);
@@ -301,15 +301,15 @@ public class TableroHnefatafl extends JFrame{
 	{
 		switch(manejadorTablero.getPos(x, y)){
 		case REY:
-			tableroBtn[a][b].setIcon(new ImageIcon(getClass().getResource("/imagenes/rey_peq.png")));
+			tableroBtn[a][b].setIcon(new ImageIcon(getClass().getResource("/imagenes/rey.png")));
 			manejadorTablero.setPos(a, b, REY);
 			break;
 		case SUECO:
-			tableroBtn[a][b].setIcon(new ImageIcon(getClass().getResource("/imagenes/sueco_peq.png")));
+			tableroBtn[a][b].setIcon(new ImageIcon(getClass().getResource("/imagenes/sueco.png")));
 			manejadorTablero.setPos(a, b, SUECO);
 			break;
 		case MOSCOVITA:
-			tableroBtn[a][b].setIcon(new ImageIcon(getClass().getResource("/imagenes/moscovita_peq.png")));
+			tableroBtn[a][b].setIcon(new ImageIcon(getClass().getResource("/imagenes/moscovita.png")));
 			manejadorTablero.setPos(a, b, MOSCOVITA);
 			break;
 		}
@@ -319,17 +319,17 @@ public class TableroHnefatafl extends JFrame{
 	}
 
 	void agregarFichas(){
-		tableroBtn[CENTRO][CENTRO].setIcon(new ImageIcon(getClass().getResource("/imagenes/rey_peq.png")));
+		tableroBtn[CENTRO][CENTRO].setIcon(new ImageIcon(getClass().getResource("/imagenes/rey.png")));
 		tableroBtn[CENTRO][CENTRO].setBackground(Color.GREEN);
 		tableroBtn[0][0].setBackground(Color.RED);
 		tableroBtn[0][LIMITE-1].setBackground(Color.RED);
 		tableroBtn[LIMITE-1][0].setBackground(Color.RED);
 		tableroBtn[LIMITE-1][LIMITE-1].setBackground(Color.RED);
 		for(int i=0;i<posBlancasX.length;i++){
-			tableroBtn[posBlancasX[i]][posBlancasY[i]].setIcon(new ImageIcon(getClass().getResource("/imagenes/sueco_peq.png")));
+			tableroBtn[posBlancasX[i]][posBlancasY[i]].setIcon(new ImageIcon(getClass().getResource("/imagenes/sueco.png")));
 		}
 		for(int i=0;i<posNegrasX.length;i++){
-			tableroBtn[posNegrasX[i]][posNegrasY[i]].setIcon(new ImageIcon(getClass().getResource("/imagenes/moscovita_peq.png")));
+			tableroBtn[posNegrasX[i]][posNegrasY[i]].setIcon(new ImageIcon(getClass().getResource("/imagenes/moscovita.png")));
 		}
 	}
 	void limpiarFichas(){

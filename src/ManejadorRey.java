@@ -2,15 +2,18 @@
 public class ManejadorRey {
 
 	ManejadorTablero manejadorTablero;
-	final int LIMITE,centro;
+	int limite,centro;
 	int encasillado;
 	int[] limitesRey;
 
-	public ManejadorRey(int LIMITE, ManejadorTablero manejadorTablero){
-		this.LIMITE = LIMITE;
-		this.centro = (LIMITE-1)/2;
+	public ManejadorRey(ManejadorTablero manejadorTablero){
 		this.manejadorTablero = manejadorTablero;
 		limitesRey = new int[4];
+	}
+	
+	public void setLimite(int limite){
+		this.limite = limite;
+		this.centro = (limite-1)/2;
 	}
 
 	public int verificarEstado(){
@@ -39,7 +42,7 @@ public class ManejadorRey {
 	}
 	
 	boolean verificarEsquinas(){
-		if(manejadorTablero.getPos(0, 0)=="rey" || manejadorTablero.getPos(0, LIMITE-1)=="rey"|| manejadorTablero.getPos(LIMITE-1, 0)=="rey"|| manejadorTablero.getPos(LIMITE-1, LIMITE-1)=="rey"){
+		if(manejadorTablero.getPos(0, 0)=="rey" || manejadorTablero.getPos(0, limite-1)=="rey"|| manejadorTablero.getPos(limite-1, 0)=="rey"|| manejadorTablero.getPos(limite-1, limite-1)=="rey"){
 			return true;
 		} else {
 			return false;
@@ -51,23 +54,23 @@ public class ManejadorRey {
 		encasillado = 0;
 		limitesRey = new int[4];
 		//esquinas
-		if((posRey[0]==0 && posRey[1]==LIMITE-2) || (posRey[0]==LIMITE-1 && posRey[1]==LIMITE-2)){
+		if((posRey[0]==0 && posRey[1]==limite-2) || (posRey[0]==limite-1 && posRey[1]==limite-2)){
 			limitesRey[0] = 1;
-		} else if((posRey[0]==0 && posRey[1]==1) || (posRey[0]==LIMITE-1 && posRey[1]==1)){ 
+		} else if((posRey[0]==0 && posRey[1]==1) || (posRey[0]==limite-1 && posRey[1]==1)){ 
 			limitesRey[1] = 1;
-		} else if((posRey[0]==1 && posRey[1]==0) || (posRey[0]==1 && posRey[1]==LIMITE-1) ){
+		} else if((posRey[0]==1 && posRey[1]==0) || (posRey[0]==1 && posRey[1]==limite-1) ){
 			limitesRey[2] = 1;
-		} else if((posRey[0]==LIMITE-2 && posRey[1]==0) || (posRey[0]==LIMITE-2 && posRey[1]==LIMITE-1)){
+		} else if((posRey[0]==limite-2 && posRey[1]==0) || (posRey[0]==limite-2 && posRey[1]==limite-1)){
 			limitesRey[3] = 1;
 		}
 		//derecha
-		if(posRey[1]==LIMITE-1){
+		if(posRey[1]==limite-1){
 			limitesRey[0] = 1;
 		} else if(posRey[0] == centro && posRey[1] == centro-1){
 			limitesRey[0] = 1;
-		} else if(posRey[1]<=LIMITE-3 && manejadorTablero.getPos(posRey[0], posRey[1]+1)=="sueco" && manejadorTablero.getPos(posRey[0], posRey[1]+2)=="moscovita"){
+		} else if(posRey[1]<=limite-3 && manejadorTablero.getPos(posRey[0], posRey[1]+1)=="sueco" && manejadorTablero.getPos(posRey[0], posRey[1]+2)=="moscovita"){
 			limitesRey[0] = 1;
-		} else if(posRey[1]<=LIMITE-2 && manejadorTablero.getPos(posRey[0], posRey[1]+1)=="moscovita"){
+		} else if(posRey[1]<=limite-2 && manejadorTablero.getPos(posRey[0], posRey[1]+1)=="moscovita"){
 			limitesRey[0] = 1;
 		} 
 		//izquierda
@@ -91,13 +94,13 @@ public class ManejadorRey {
 			limitesRey[2] = 1;
 		}
 		//abajo
-		if(posRey[0]==LIMITE-1){
+		if(posRey[0]==limite-1){
 			limitesRey[3] = 1;
 		} else if(posRey[0] == centro-1 && posRey[1] == centro){
 			limitesRey[3] = 1;
-		} else if(posRey[0]<=LIMITE-3 && manejadorTablero.getPos(posRey[0]+1, posRey[1])=="sueco" && manejadorTablero.getPos(posRey[0]+2, posRey[1])=="moscovita"){
+		} else if(posRey[0]<=limite-3 && manejadorTablero.getPos(posRey[0]+1, posRey[1])=="sueco" && manejadorTablero.getPos(posRey[0]+2, posRey[1])=="moscovita"){
 			limitesRey[3] = 1;
-		} else if(posRey[0]<=LIMITE-2 && manejadorTablero.getPos(posRey[0]+1, posRey[1])=="moscovita"){
+		} else if(posRey[0]<=limite-2 && manejadorTablero.getPos(posRey[0]+1, posRey[1])=="moscovita"){
 			limitesRey[3] = 1;
 		}
 		for(int i=0;i<limitesRey.length;i++){
@@ -129,7 +132,7 @@ public class ManejadorRey {
 				w--;
 			}
 			w=x;
-			while(w<=LIMITE-1 && manejadorTablero.getPos(w, y)!="sueco"){
+			while(w<=limite-1 && manejadorTablero.getPos(w, y)!="sueco"){
 				String s = manejadorTablero.getPos(w, y);
 				if(s=="moscovita"){
 					return true;
@@ -137,7 +140,7 @@ public class ManejadorRey {
 				w++;
 			}
 			w = y; 
-			while(w<=LIMITE-1 && manejadorTablero.getPos(x, w)!="sueco"){
+			while(w<=limite-1 && manejadorTablero.getPos(x, w)!="sueco"){
 				String s = manejadorTablero.getPos(x, w);
 				if(s=="moscovita"){
 					return true;
@@ -167,7 +170,7 @@ public class ManejadorRey {
 				w--;
 			}
 			w=x;
-			while(w<=LIMITE-1 && manejadorTablero.getPos(w, y)!="sueco"){
+			while(w<=limite-1 && manejadorTablero.getPos(w, y)!="sueco"){
 				String s = manejadorTablero.getPos(w, y);
 				if(s=="moscovita"){
 					return true;
@@ -197,7 +200,7 @@ public class ManejadorRey {
 				w--;
 			}
 			w = y; 
-			while(w<=LIMITE-1 && manejadorTablero.getPos(x, w)!="sueco"){
+			while(w<=limite-1 && manejadorTablero.getPos(x, w)!="sueco"){
 				String s = manejadorTablero.getPos(x, w);
 				if(s=="moscovita"){
 					return true;
@@ -220,7 +223,7 @@ public class ManejadorRey {
 				w--;
 			}
 			w=x;
-			while(w<=LIMITE-1 && manejadorTablero.getPos(w, y)!="sueco"){
+			while(w<=limite-1 && manejadorTablero.getPos(w, y)!="sueco"){
 				String s = manejadorTablero.getPos(w, y);
 				if(s=="moscovita"){
 					System.out.println(x+" "+w);
@@ -229,7 +232,7 @@ public class ManejadorRey {
 				w++;
 			}
 			w = y; 
-			while(w<=LIMITE-1 && manejadorTablero.getPos(x, w)!="sueco"){
+			while(w<=limite-1 && manejadorTablero.getPos(x, w)!="sueco"){
 				String s = manejadorTablero.getPos(x, w);
 				if(s=="moscovita"){
 					System.out.println(x+" "+w);
@@ -245,9 +248,9 @@ public class ManejadorRey {
 	int verificarJaques(){
 		int[] posRey = buscarRey();
 		int j = 0;
-		if(posRey[0]==0 || posRey[0]==LIMITE-1){
+		if(posRey[0]==0 || posRey[0]==limite-1){
 			j = buscarJaque(posRey[0], posRey[1],0); 
-		} else if(posRey[1]==0 || posRey[1]==LIMITE-1){
+		} else if(posRey[1]==0 || posRey[1]==limite-1){
 			j = buscarJaque(posRey[0], posRey[1],1); 
 		}
 		return j;
@@ -259,13 +262,13 @@ public class ManejadorRey {
 		case 0:
 			i=y+1;
 			c = 0;
-			while(i<=LIMITE-2){
+			while(i<=limite-2){
 				String s = manejadorTablero.getPos(x, i);
 				if(s=="" || s==null){
 					c++;
 				}
 				i++;
-			}if(c==(LIMITE-2)-y){
+			}if(c==(limite-2)-y){
 				j++;
 			}
 			i = y-1;
@@ -283,13 +286,13 @@ public class ManejadorRey {
 		case 1:
 			i=x+1;
 			c = 0;
-			while(i<=LIMITE-2){
+			while(i<=limite-2){
 				String s = manejadorTablero.getPos(i, y);
 				if(s=="" || s==null){
 					c++;
 				}
 				i++;
-			}if(c==(LIMITE-2)-x){
+			}if(c==(limite-2)-x){
 				j++;
 			}
 			i = x-1;
@@ -310,8 +313,8 @@ public class ManejadorRey {
 
 	public int[] buscarRey(){
 		int x=-1, y=-1;
-		for(int i = 0; i<=LIMITE-1;i++){
-			for(int j=0; j<=LIMITE-1;j++){
+		for(int i = 0; i<=limite-1;i++){
+			for(int j=0; j<=limite-1;j++){
 				if(manejadorTablero.getPos(i,j)=="rey"){
 					x=i;
 					y=j;

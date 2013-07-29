@@ -18,17 +18,19 @@ public class PanelPrincipal extends JPanel {
 	VentanaReglas ventanaReglas;
 	VentanaHistoria ventanaHistoria;
 	TableroHnefatafl tableroHnefatafl;
+	TableroTawlBwrdd tableroTawlBwrdd;
+	TableroAleaEvangelii tableroAleaEvangelii;
+	TableroTablut tableroTablut;
+	TableroArdRi tableroArdRi;
 	ManejadorTablero manejadorTablero;
 	ManejadorRey manejadorRey;
 	ManejadorFichas manejadorFichas;
 	String[] ubicacion = {"/imagenes/fondo.jpg","/imagenes/fondo2.jpg"};
-	int limX,limY,posFondo;
+	int posFondo;
 	
-	public PanelPrincipal(VentanaReglas vR, VentanaHistoria vH,int limX,int limY,ManejadorTablero mT, ManejadorRey mR,ManejadorFichas mF) {
+	public PanelPrincipal(VentanaReglas vR, VentanaHistoria vH,ManejadorTablero mT, ManejadorRey mR,ManejadorFichas mF) {
 		posFondo = new Random().nextInt(2);
 		initComponents();
-		this.limX = limX;
-		this.limY = limY;
 		this.ventanaReglas = vR;
 		this.ventanaHistoria = vH;
 		this.manejadorTablero = mT;
@@ -60,34 +62,34 @@ public class PanelPrincipal extends JPanel {
 		});
 
 		btnJ2.setFont(new java.awt.Font("Tahoma", 0, 12)); 
-		btnJ2.setText("Tawl Bwrdd ");
+		btnJ2.setText("Tawl Bwrdd");
 		btnJ2.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton2ActionPerformed(evt);
+				btnClic(evt,2);
 			}
 		});
 
 		btnJ3.setFont(new java.awt.Font("Tahoma", 0, 12)); 
-		btnJ3.setText("Ard Ri");
+		btnJ3.setText("Alea Evangelii");
 		btnJ3.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton3ActionPerformed(evt);
+				btnClic(evt,3);
 			}
 		});
 
 		btnJ4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-		btnJ4.setText("Branbdubh");
+		btnJ4.setText("Tablut");
 		btnJ4.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton4ActionPerformed(evt);
+				btnClic(evt,4);
 			}
 		});
 
 		btnJ5.setFont(new java.awt.Font("Tahoma", 0, 12)); 
-		btnJ5.setText("Tablut");
+		btnJ5.setText("Ard-Ri");
 		btnJ5.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton5ActionPerformed(evt);
+				btnClic(evt,5);
 			}
 		});
 
@@ -185,38 +187,28 @@ public class PanelPrincipal extends JPanel {
 		ventanaHistoria.setVisible(true);
 	}
 
-	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
-		// TODO add your handling code here:
-		//tablero_ardri juego_ardri = new tablero_ardri();
-	}//GEN-LAST:event_jButton3ActionPerformed
-
 	private void btnClic(ActionEvent evt,int x) {//GEN-FIRST:event_jButton1ActionPerformed
 		
 		switch(x){
 		case 1:
-			tableroHnefatafl = new TableroHnefatafl(limX,limY,manejadorTablero,manejadorRey,manejadorFichas);
+			tableroHnefatafl = new TableroHnefatafl(manejadorTablero,manejadorRey,manejadorFichas);
 			break;
-		}
+		case 2:
+			tableroTawlBwrdd = new TableroTawlBwrdd(manejadorTablero,manejadorRey,manejadorFichas);
+			break;
+		case 3:
+			tableroAleaEvangelii = new TableroAleaEvangelii(manejadorTablero,manejadorRey,manejadorFichas);
+			break;
+		case 4:
+			tableroTablut = new TableroTablut(manejadorTablero,manejadorRey,manejadorFichas);
+			break;
+		case 5:
+			tableroArdRi = new TableroArdRi(manejadorTablero,manejadorRey,manejadorFichas);
+			break;
+		}	
 		
 	}
-
-	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-		// TODO add your handling code here:
-		//tablero_tawlbwrdd juego_tawlbwrdd = new tablero_tawlbwrdd();
-	}//GEN-LAST:event_jButton2ActionPerformed
-
-	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-		// TODO add your handling code here:
-		//tablero_brandubh juego_brandubh = new tablero_brandubh();
-	}//GEN-LAST:event_jButton4ActionPerformed
-
-	private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {
-		
-		//tablero_tablut juego_tablut = new tablero_tablut();
-
-	}
-
-
+	
 	@Override
 	public void paintComponent(Graphics g)
 	{

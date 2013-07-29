@@ -7,7 +7,7 @@ import javax.swing.*;
 
 
 @SuppressWarnings("serial")
-public class TableroHnefatafl extends JFrame{
+public class TableroAleaEvangelii extends JFrame{
 	ManejadorTablero manejadorTablero;
 	ManejadorRey manejadorRey;
 	ManejadorFichas manejadorFichas;
@@ -18,19 +18,19 @@ public class TableroHnefatafl extends JFrame{
 	JButton[][] tableroBtn; 
 	int y, x;
 	boolean esperandoMov = false, fin = false;
-	final int[] posBlancasX = {3,4,4,4,5,5,5,5,6,6,6,7}, 
-			posBlancasY = {5,4,5,6,3,4,6,7,4,5,6,5},
-			posNegrasX = {0,0,0,0,0,1,10,10,10,10,10,9,3,4,5,6,7,5,3,4,5,6,7,5},
-			posNegrasY = {3,4,5,6,7,5,3,4,5,6,7,5,0,0,0,0,0,1,10,10,10,10,10,9};
-	final int LIMITE = 11,CENTRO;
+	final int[] posBlancasX = {0,0,0,0,2,2,2,2,3,3,3,4,4,5,5,5,5,5,5,6,6,7,7,8,9,9,9,9,10,11,11,12,12,13,13,13,13,13,13,14,14,15,15,15,16,16,16,16,18,18,18,18}, 
+			posBlancasY = {2,5,13,16,0,5,16,18,7,9,11,6,12,0,2,5,13,16,18,4,14,3,15,9,3,8,10,15,9,3,15,4,14,5,13,0,2,16,18,6,12,7,9,11,0,5,13,18,2,5,13,16},
+			posNegrasX = {4,4,6,7,7,8,8,8,8,9,9,10,10,10,10,11,11,12,14,14},
+			posNegrasY = {8,10,9,8,10,4,7,11,14,6,12,4,7,11,14,8,10,9,8,10};
+	final int LIMITE = 19, CENTRO;
 	final int NADA = 0, GANOREY = 1, PERDIOREY = 2, JAQUEYADV = 3, ADV = 4, JAQUE = 5, JAQUEMATE = 6;
-	final String SUECO = "sueco", MOSCOVITA = "moscovita", REY = "rey", ADJ = "Jugador 1: Jaque", ADJM = "Jugador 1: Jaque Mate",ADCR = "Jugador 2: Mira tu Rey";
+	final String SUECO = "sueco", MOSCOVITA = "moscovita", REY = "rey", ADJ = "Jugador 2: Jaque", ADJM = "Jugador 2: Jaque Mate",ADCR = "Jugador 1: Mira tu Rey";
 	enum jugador{JUGADOR1, JUGADOR2};
 	jugador actual;
 
 
-	public TableroHnefatafl(ManejadorTablero mT, ManejadorRey mR,ManejadorFichas mF){
-		super("Hnefatafl");
+	public TableroAleaEvangelii(ManejadorTablero mT, ManejadorRey mR,ManejadorFichas mF){
+		super("Alea Evangelii");
 		setLayout(null);
 		setSize(800,560);
 		setResizable(false);
@@ -45,7 +45,7 @@ public class TableroHnefatafl extends JFrame{
 		actual = jugador.JUGADOR1;
 
 		panelTablero = new JPanel();
-		panelTablero.setLayout(new GridLayout(LIMITE, LIMITE, 3, 3));
+		panelTablero.setLayout(new GridLayout(LIMITE, LIMITE, 1, 1));
 		panelTablero.setBounds(1, 1, 625, 500);
 		panelTablero.setVisible(true);
 
@@ -156,6 +156,23 @@ public class TableroHnefatafl extends JFrame{
 			else if(podriaMover(x_act,y_act)){
 				if(puedeMover(x,y,x_act,y_act)){
 					mover(x,y,x_act,y_act);
+					if(comerFicha(x_act,y_act,MOSCOVITA,SUECO)){
+						comerFichas(manejadorFichas.getCoordX(),manejadorFichas.getCoordY());
+					} 
+					verificarEstado();
+					liberarFicha();
+				}else{
+					liberarFicha(true);
+				}
+			}
+			break;
+		case JUGADOR2:
+			if(puedeSeleccionar(x_act,y_act)){
+				seleccionarFicha(x_act, y_act);
+			}
+			else if(podriaMover(x_act,y_act)){
+				if(puedeMover(x,y,x_act,y_act)){
+					mover(x,y,x_act,y_act);
 					if(comerFicha(x_act,y_act,SUECO,MOSCOVITA)){
 						comerFichas(manejadorFichas.getCoordX(),manejadorFichas.getCoordY());
 					}
@@ -167,32 +184,14 @@ public class TableroHnefatafl extends JFrame{
 				}
 			}
 			break;
-
-		case JUGADOR2:
-			if(puedeSeleccionar(x_act,y_act)){
-				seleccionarFicha(x_act, y_act);
-			}
-			else if(podriaMover(x_act,y_act)){
-				if(puedeMover(x,y,x_act,y_act)){
-					mover(x,y,x_act,y_act);
-					if(comerFicha(x_act,y_act,MOSCOVITA,SUECO)){
-						comerFichas(manejadorFichas.getCoordX(),manejadorFichas.getCoordY());
-					} 
-					verificarEstado();
-					liberarFicha();
-				}else{
-					liberarFicha(true);
-				}
-			}
-			break;
 		}
 	}
 
 	boolean puedeSeleccionar(int x_act, int y_act){
 		if(actual == jugador.JUGADOR1){
-			return !esperandoMov && manejadorFichas.btnEsNegro(x_act, y_act) && manejadorFichas.btnConIcono(tableroBtn[x_act][y_act]);
-		}else{
 			return !esperandoMov && manejadorFichas.btnEsBlanco(x_act, y_act) && manejadorFichas.btnConIcono(tableroBtn[x_act][y_act]);
+		}else{
+			return !esperandoMov && manejadorFichas.btnEsNegro(x_act, y_act) && manejadorFichas.btnConIcono(tableroBtn[x_act][y_act]);
 		}
 	}
 
@@ -288,10 +287,10 @@ public class TableroHnefatafl extends JFrame{
 	String getMensaje(){
 		switch(actual){
 		case JUGADOR1:
-			men = "Turno del Jugador #1 (negras)";
+			men = "Turno del Jugador #1 (blancas)";
 			break;
 		case JUGADOR2:
-			men = "Turno del Jugador #2 (blancas)";
+			men = "Turno del Jugador #2 (negras)";
 			break;
 		}
 		return men;

@@ -7,7 +7,7 @@ import javax.swing.*;
 
 
 @SuppressWarnings("serial")
-public class TableroHnefatafl extends JFrame{
+public class TableroTawlBwrdd extends JFrame{
 	ManejadorTablero manejadorTablero;
 	ManejadorRey manejadorRey;
 	ManejadorFichas manejadorFichas;
@@ -20,8 +20,8 @@ public class TableroHnefatafl extends JFrame{
 	boolean esperandoMov = false, fin = false;
 	final int[] posBlancasX = {3,4,4,4,5,5,5,5,6,6,6,7}, 
 			posBlancasY = {5,4,5,6,3,4,6,7,4,5,6,5},
-			posNegrasX = {0,0,0,0,0,1,10,10,10,10,10,9,3,4,5,6,7,5,3,4,5,6,7,5},
-			posNegrasY = {3,4,5,6,7,5,3,4,5,6,7,5,0,0,0,0,0,1,10,10,10,10,10,9};
+			posNegrasX = {0,0,0,1,1,2,4,4,4,4,5,5,5,5,6,6,6,6,8,9,9,10,10,10},
+			posNegrasY = {4,5,6,4,6,5,0,1,9,10,0,2,8,10,0,1,9,10,5,4,6,4,5,6};
 	final int LIMITE = 11,CENTRO;
 	final int NADA = 0, GANOREY = 1, PERDIOREY = 2, JAQUEYADV = 3, ADV = 4, JAQUE = 5, JAQUEMATE = 6;
 	final String SUECO = "sueco", MOSCOVITA = "moscovita", REY = "rey", ADJ = "Jugador 1: Jaque", ADJM = "Jugador 1: Jaque Mate",ADCR = "Jugador 2: Mira tu Rey";
@@ -29,8 +29,8 @@ public class TableroHnefatafl extends JFrame{
 	jugador actual;
 
 
-	public TableroHnefatafl(ManejadorTablero mT, ManejadorRey mR,ManejadorFichas mF){
-		super("Hnefatafl");
+	public TableroTawlBwrdd(ManejadorTablero mT, ManejadorRey mR,ManejadorFichas mF){
+		super("Tawl Bwrdd");
 		setLayout(null);
 		setSize(800,560);
 		setResizable(false);

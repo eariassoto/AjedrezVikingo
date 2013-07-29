@@ -1,15 +1,12 @@
 public class Main {
 
 	public static void main(String[] args) {
-		int limX=11,limY=11;
-		ManejadorTablero manejadorTablero = new ManejadorTablero(limX,limY);
-		ManejadorRey manejadorRey = new ManejadorRey(limX,limY,manejadorTablero);
-		ManejadorFichas manejadorFichas = new ManejadorFichas(limX,limY,manejadorTablero);
-		PanelReglas panelReglas = new PanelReglas();
-		VentanaReglas ventanaReglas = new VentanaReglas(panelReglas);
-		PanelHistoria panelHistoria = new PanelHistoria();
-		VentanaHistoria ventanaHistoria = new VentanaHistoria(panelHistoria);
-		PanelPrincipal panelPrincipal = new PanelPrincipal(ventanaReglas,ventanaHistoria,limX,limY,manejadorTablero,manejadorRey,manejadorFichas);
+		ManejadorTablero manejadorTablero = new ManejadorTablero();
+		ManejadorRey manejadorRey = new ManejadorRey(manejadorTablero);
+		ManejadorFichas manejadorFichas = new ManejadorFichas(manejadorTablero);
+		VentanaReglas ventanaReglas = new VentanaReglas();
+		VentanaHistoria ventanaHistoria = new VentanaHistoria();
+		PanelPrincipal panelPrincipal = new PanelPrincipal(ventanaReglas,ventanaHistoria,manejadorTablero,manejadorRey,manejadorFichas);
 		VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(panelPrincipal);
 		ventanaPrincipal.setVisible(true);
 	}
