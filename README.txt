@@ -1,17 +1,8 @@
 Ajedrez Vikingo
-Autor: Emmanuel Arias Soto
 
-Jugadores: 2
+Jugadores: 2.
+Incluye 2 tableros diferentes, reglas del juego y una breve historia del juego.
 
-Historia del Juego:
-Antes de la introducción del ajedrez en los siglos XI y XII, los escandinavos agudizaban su ingenio jugando un juego conocido como Tafl. Tafl en nórdico antiguo significa "mesa" y al final del período de referencia a una variedad de juegos de mesa, como el ajedrez (Skak-Tafl o "check-table"), Tabula (el ancestro medieval de Backgammon, presentado por los franceses como Quatre y así Kvatru-Tafl), Fox and Geese (Ref-Skak, "zorro de ajedrez", Hala-Tafl o Frey-Tafl), Morris Tres Hombres (Hræ_-Tafl "Quick-Tafl") y Nueve hombres de Morris. Sin embargo, el término Tafl fue más comúnmente usado para referirse a un juego conocido como Hnefa-Tafl o "Mesa del Rey". Hnefatafl era conocido en Escandinavia antes del año  400 dC y fue llevado por los vikingos a Groenlandia, Islandia, Irlanda, Gran Bretaña, País de Gales y al este hasta Ucrania. Los sajones tenían su propia variante, derivado de un juego Tafl germánica común, que aparentemente era el único juego de mesa conocido a ellos antes de la introducción de Ajedrez. Adiferencia del ajedrez donde la disposición de las piezas se emplazan inicialmente de forma lineal en flancos opuestos, las figuras del tafl parten del centro del tablero.
-
-Versiones:
-El Hnefatalf. Es la más conocida de todas las versiones,Los vikingos consideraban que saber jugar bien al Hnefatafl o Tablero del Rey era signo de nobleza.
-El Tawlbyund (o Tawl Bwrdd, Tablero de tiro), la variante galesa, pertenece al menos al siglo X.
-El Alea evangelii. Es una versión que se jugó en la Inglaterra sajona.
-El Tablut, la variante finlandesa.
-El Ard-Ri, la variante escocesa.
-
-Reglas del Juego
-Los jugadores se mueven por turnos. Todas las piezas se mueven de la misma manera, como torres de ajedrez. Es decir, en su turno, un jugador puede deslizar una sola pieza de su color de cualquier número de casillas en cualquier dirección ortogonal (arriba-abajo o izquierda-derecha, no se mueve en diagonal), siempre y cuando no salte por encima de otra pieza de cualquier color. El trono y de los cuatro cuadrados de las esquinas están fuera del alcance de todas las piezas, excepto el Rey. Con las variantes de mesa más pequeñas, piezas de cualquier color pueden pasar sobre el Trono. El jugador blanco estará tratando de que su rey escape llegando a una de las esquinas. Si el jugador blanco se mueve para que su rey tenga un camino claro a cualquiera de las cuatro esquinas, debe anunciar que tiene una vía de escape abierta. Los lapones utilizan la palabra Raichi ("Jaque") para anunciar una sola ruta y Tuichi ("Jaque Mate") para anunciar una ruta doble. En su siguiente turno, si es que aún puede hacerlo, el rey se  puede mover a una casilla de la esquina y escapar. El jugador blanco gana entonces. Si el jugador Negro abre accidentalmente una vía de escape para el rey, el jugador blanco debe aprovecharla de inmediato. Si la pieza movida termina intercalando una pieza opuesta entre sí mismo y otra pieza del color en movimiento o una casilla de la esquina, la pieza intercalada se retira del tablero. Esto se conoce como captura de custodia. Es posible capturar varias piezas en un solo movimiento. El rey debe ser encasillado en ambos ejes. El trono, esquinas y bordes cuentan como piezas negras con fines de encasillar al rey, por lo que el jugador Negro necesita solo tres piezas para capturar al rey en el borde de la mesa o si el Rey está a un lado de su trono, dos si el Rey está justo al lado de una esquina. Cuando el rey está en peligro de ser capturado en el siguiente movimiento del jugador Negro, se debe anunciar "Mira a tu rey" para el jugador blanco. El jugador Negro gana  al capturar al Rey. El Rey también se puede     capturar si él y no más de un defensor están rodeado por todos lados e incapaces de moverse. Una pieza puede moverse con seguridad entre dos piezas del otro color que están opuestas (o una casilla de la esquina). El ganador es el jugador blanco si llega una casilla de la esquina con su rey, el jugador negro si logra capturar el rey.
+TODO:
+IA para que pueda ser jugado por una persona vs PC.
+En caso de ser el modo 2 jugadores jugar dos partidas, almacenar los movimientos y fichas comidad para promediar y sacar el ganador.
